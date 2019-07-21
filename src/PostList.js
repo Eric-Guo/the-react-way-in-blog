@@ -9,6 +9,8 @@ class PostList extends Component {
       posts: []
     };
     this.timer = null;
+    this.handleVote = this.handleVote.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   componentDidMount() {
@@ -31,9 +33,21 @@ class PostList extends Component {
   }
 
   // 处理点赞逻辑
-  handleVote = (id) => {
+  handleVote(id) {
     const posts = this.state.posts.map(item => {
       const newItem = item.id === id ? {...item, vote: ++item.vote} : item;
+      return newItem;
+    })
+    this.setState({
+      posts
+    })
+  }
+
+  // 保存帖子
+  handleSave(post) {
+    // 根据post的id，过滤出当前要更新的post
+    const posts = this.state.posts.map(item => {
+      const newItem = item.id === post.id ? post : item;
       return newItem;
     })
     this.setState({
@@ -51,6 +65,7 @@ class PostList extends Component {
               key = {item.id}
               post = {item}
               onVote = {this.handleVote}
+              onSave = {this.handleSave}
             />
           )}
         </ul>

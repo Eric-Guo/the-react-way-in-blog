@@ -29,3 +29,17 @@
   vertical-align: middle;
   display: table-cell;
 }
+
+textarea {
+  width: 100%;
+}
+
+button {
+  border: 1px solid #CCC;
+  border-radius: 3px;
+  background-color: #FFF;
+}
+
+button:focus {
+  outline: none;
+}
