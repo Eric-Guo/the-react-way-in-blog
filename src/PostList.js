@@ -13,8 +13,9 @@ class PostList extends Component {
 
   componentDidMount() {
     // 用setTimeout模拟异步从服务器端获取数据
-    this.timer = setTimeout(() => {
-      this.setState({
+    const that = this;
+    setTimeout(function() {
+      that.setState({
         posts: [
           { id: 1, title: "大家一起来讨论React吧", author: "张三", date: "2017-09-01 10:00", vote: 0 },
           { id: 2, title: "前端框架，你最爱哪一个", author: "李四", date: "2017-09-01 12:00", vote: 0 },
