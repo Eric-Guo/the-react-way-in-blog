@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>Hello Blog</h1>
+        <h1>帖子列表</h1>
       </header>
       <PostList />
     </div>
