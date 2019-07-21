@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class Modal extends Component {
+  constructor(props) {
+    super(props);
+    this.container = document.createElement("div");
+    document.body.appendChild(this.container);
+  }
+
+  componentWillUnmount() {
+    document.body.removeChild(this.container);
+  }
+
+  render() {
+    return ReactDOM.createPortal(
+      <div className="modal">
+        <span className="close" onClick={this.props.onClose}>
+          &times;
+        </span>
+        <div className="content">{this.props.children}</div>
+      </div>,
+      this.container
+    );
+  }
+}
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showModal: true };
+  }
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
+
+  render() {
+    return (
+      <div>
+        <h2>Dashboard</h2>
+        {this.state.showModal && (
+          <Modal onClose={this.closeModal}>Modal Dialog </Modal>
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;
