@@ -9,7 +9,6 @@ class PostList extends Component {
       posts: []
     };
     this.timer = null;
-    this.handleVote = this.handleVote.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +31,7 @@ class PostList extends Component {
   }
 
   // 处理点赞逻辑
-  handleVote(id) {
+  handleVote = (id) => {
     const posts = this.state.posts.map(item => {
       const newItem = item.id === id ? {...item, vote: ++item.vote} : item;
       return newItem;
