@@ -1,3 +1,12 @@
+[![CircleCI](https://circleci.com/gh/Eric-Guo/the-react-way-in-blog.svg?style=svg)](https://circleci.com/gh/Eric-Guo/the-react-way-in-blog)
+
+# React 进阶之路 blog
+
+[React 进阶之路原来的repos](https://github.com/xuchaobei/react-book)是按章节分列的，十分不利于快速回顾，所以我找着书重新实现了一遍。
+
+
+------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
