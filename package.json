@@ -1,6 +1,8 @@
 {
   "name": "blog-react-way",
   "version": "0.1.0",
+  "description": "Show the correct way to do React 进阶之路",
+  "author": "Eric Guo",
   "private": true,
   "dependencies": {
     "react": "^16.8.6",
