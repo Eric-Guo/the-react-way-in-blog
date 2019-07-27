@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import "./PostItem.css";
-import like from "./images/like-default.png";
+import like from "../images/like-default.png";
 
 class PostItem extends Component {
   constructor(props) {

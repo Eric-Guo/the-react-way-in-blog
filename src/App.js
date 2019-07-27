@@ -1,9 +1,12 @@
 import React from 'react';
-import PostList from "./PostList";
+import { BrowserRouter } from "react-router-dom";
+import PostList from "./components/PostList";
 
 function App() {
   return (
-    <PostList />
+    <BrowserRouter>
+      <PostList />
+    </BrowserRouter>
   );
 }
 
