@@ -1,14 +1,37 @@
-import React from 'react';
+import React, { Component } from "react";
 import logo from './logo.svg';
 import './App.css';
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.timer = null;
+    this.state = {
+      date: new Date()
+    };
+    this.updateDate = this.updateDate.bind(this);
+  }
 
-function App() {
+  componentDidMount() {
+    this.timer = setInterval(this.updateDate, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
+
+  updateDate() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
+  render() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {this.state.date.toString()}
         </p>
         <a
           className="App-link"
@@ -21,6 +44,7 @@ function App() {
       </header>
     </div>
   );
+  }
 }
 
 export default App;
