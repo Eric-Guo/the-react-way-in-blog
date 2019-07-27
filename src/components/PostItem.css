@@ -1,4 +1,4 @@
-.item {
+.postItem {
   border-top: 1px solid grey;
   padding: 15px;
   font-size: 14px;
@@ -6,40 +6,31 @@
   line-height: 21px;
 }
 
-.title {
+.postItem .title {
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
   color: #009a61;
 }
 
-.like {
+.postItem .like {
   width: 100%;
   height: 20px;
 }
 
-.like img{
+.postItem .like img{
   width: 20px;
   height: 20px;
 }
 
-.like span{
+.postItem .like span{
   width: 20px;
   height: 20px;
   vertical-align: middle;
   display: table-cell;
 }
 
-textarea {
+.postItem textarea {
   width: 100%;
 }
 
-button {
-  border: 1px solid #CCC;
-  border-radius: 3px;
-  background-color: #FFF;
-}
-
-button:focus {
-  outline: none;
-}

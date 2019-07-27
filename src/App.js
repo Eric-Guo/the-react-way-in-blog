@@ -1,11 +1,14 @@
 import React from 'react';
-import { BrowserRouter } from "react-router-dom";
-import PostList from "./components/PostList";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Home from "./components/Home";
 
 function App() {
   return (
     <BrowserRouter>
-      <PostList />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/posts" component={Home} />
+      </Switch>
     </BrowserRouter>
   );
 }
