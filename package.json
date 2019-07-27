@@ -16,6 +16,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "https://d.apicloud.com/mcm/api",
   "eslintConfig": {
     "extends": "react-app"
   },
