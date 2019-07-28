@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import PostList from "./PostList";
+import Header from "./Header";
 
 class Home extends Component {
   constructor(props) {
@@ -23,10 +24,15 @@ class Home extends Component {
   }
 
   render() {
-    const { match } = this.props;
-    const { userId } = this.state;
+    const { match, location } = this.props;
+    const { userId, username } = this.state;
     return (
       <div>
+        <Header
+          username={username}
+          onLogout={this.handleLogout}
+          location={location}
+        />
         <Route
           path={match.url}
           exact
