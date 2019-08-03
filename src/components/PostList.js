@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PostItem from "./PostItem";
 import PostEditor from "./PostEditor";
+import { Link } from "react-router-dom";
 import { get, post } from "../utils/request";
 import url from "../utils/url";
 import "./PostList.css";
@@ -71,10 +72,12 @@ class PostList extends Component {
           {userId ? <button onClick={this.handleNewPost}>发帖</button> : null}
           <ul>
             {this.state.posts.map(item =>
-              <PostItem
-                key = {item.id}
-                post = {item}
-              />
+              <Link key={item.id} to={`/posts/${item.id}`}>
+                <PostItem
+                  key = {item.id}
+                  post = {item}
+                />
+              </Link>
             )}
           </ul>
         </div>

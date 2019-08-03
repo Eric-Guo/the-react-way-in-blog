@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import PostList from "./PostList";
 import Header from "./Header";
+import Post from "./Post";
 
 class Home extends Component {
   constructor(props) {
@@ -37,6 +38,10 @@ class Home extends Component {
           path={match.url}
           exact
           render={props => <PostList userId={userId} {...props} />}
+        />
+        <Route
+          path={`${match.url}/:id`}
+          render={props => <Post userId={userId} {...props} />}
         />
       </div>
     );
