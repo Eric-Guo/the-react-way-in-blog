@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import PostItem from "./PostItem";
+import PostsView from "./PostsView";
 import PostEditor from "./PostEditor";
-import { Link } from "react-router-dom";
 import { get, post } from "../utils/request";
 import url from "../utils/url";
 import "./PostList.css";
@@ -70,21 +69,13 @@ class PostList extends Component {
           <h2>帖子列表</h2>
            {/* 只有在登录状态，才显示发帖按钮 */}
           {userId ? <button onClick={this.handleNewPost}>发帖</button> : null}
-          <ul>
-            {this.state.posts.map(item =>
-              <Link key={item.id} to={`/posts/${item.id}`}>
-                <PostItem
-                  key = {item.id}
-                  post = {item}
-                />
-              </Link>
-            )}
-          </ul>
         </div>
         {/* 若当前正在创建新帖子，则渲染PostEditor组件 */}
         {this.state.newPost ? (
           <PostEditor onSave={this.handleSave} onCancel={this.handleCancel} />
         ) : null}
+        {/* PostsView显示帖子的列表数据 */}
+        <PostsView posts={this.state.posts} />
       </div>
     );
   }
