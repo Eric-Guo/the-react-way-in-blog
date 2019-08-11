@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CommentsView from "./CommentsView";
-import "./CommentList.css";
+import "./style.css";
 
 class CommentList extends Component {
   constructor(props) {
@@ -18,8 +18,8 @@ class CommentList extends Component {
       value: e.target.value
     });
   }
- 
-  // 保存新评论 
+
+  // 保存新评论
   handleClick(e) {
     const content = this.state.value;
     if (content.length > 0) {

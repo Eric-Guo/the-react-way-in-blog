@@ -1,6 +1,6 @@
 import React from "react";
 import { getFormatDate } from "../utils/date";
-import "./PostView.css";
+import "./style.css";
 import like from "../images/like.png";
 
 function PostView(props) {

@@ -4,7 +4,7 @@ import PostView from "./PostView";
 import CommentList from "./CommentList";
 import { get, put, post } from "../utils/request";
 import url from "../utils/url";
-import "./Post.css";
+import "./style.css";
 
 class Post extends Component {
   constructor(props) {
