@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import PostEditor from "./PostEditor";
-import PostView from "./PostView";
-import CommentList from "./CommentList";
-import { get, put, post } from "../utils/request";
-import url from "../utils/url";
+import PostEditor from "./components/PostEditor";
+import PostView from "./components/PostView";
+import CommentList from "./components/CommentList";
+import { get, put, post } from "../../utils/request";
+import url from "../../utils/url";
 import "./style.css";
 
 class Post extends Component {

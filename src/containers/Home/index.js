@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import PostList from "./PostList";
-import Header from "./Header";
-import Post from "./Post";
+import PostList from "../PostList";
+import Header from "../../components/Header";
+import Post from "../Post";
 
 class Home extends Component {
   constructor(props) {

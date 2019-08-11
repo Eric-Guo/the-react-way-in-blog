@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CommentsView from "./CommentsView";
+import CommentsView from "../CommentsView";
 import "./style.css";
 
 class CommentList extends Component {
