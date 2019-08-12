@@ -93,6 +93,7 @@ class Post extends Component {
 
   // 同步帖子的修改到服务器
   savePost(id, post) {
+    post = { ...post, author: this.props.userId };
     put(url.updatePost(id), post).then(data => {
       if (!data.error) {
         /* 因为返回的帖子对象只有author的id信息，
@@ -112,7 +113,7 @@ class Post extends Component {
     if (!post) {
       return null;
     }
-    const editable = userId === post.author.id;
+    const editable = (post.author === null || userId === post.author.id);
     return (
       <div className="post">
         {editing ? (

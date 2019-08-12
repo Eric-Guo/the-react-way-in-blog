@@ -9,7 +9,7 @@ function PostItem(props) {
     <li className="postItem">
       <div className="title">{post.title}</div>
       <div>
-        创建人：<span>{post.author.username}</span>
+        创建人：<span>{post.author && post.author.username}</span>
       </div>
       <div>
         更新时间：<span>{getFormatDate(post.updatedAt)}</span>

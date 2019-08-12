@@ -10,7 +10,7 @@ function PostView(props) {
       <div>
         <h2>{post.title}</h2>
         <div className="mark">
-          <span className="author">{post.author.username}</span>
+          <span className="author">{post.author && post.author.username}</span>
           <span>·</span>
           <span>{getFormatDate(post.updatedAt)}</span>
           {editable ? (
