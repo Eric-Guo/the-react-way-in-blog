@@ -10,13 +10,6 @@ import { getPostListWithAuthors } from "../../redux/modules";
 import "./style.css";
 
 class PostList extends Component {
-  constructor(props) {
-    super(props);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleNewPost = this.handleNewPost.bind(this);
-  }
-
   componentDidMount() {
     this.props.fetchAllPosts();  // 获取帖子列表
   }
@@ -27,14 +20,14 @@ class PostList extends Component {
   };
 
   // 取消新建帖子
-  handleCancel() {
+  handleCancel = () => {
     this.props.closeAddDialog();
-  }
+  };
 
   // 新建帖子
-  handleNewPost() {
+  handleNewPost = () => {
     this.props.openAddDialog();
-  }
+  };
 
   render() {
     const { posts, user, isAddDialogOpen } = this.props;
