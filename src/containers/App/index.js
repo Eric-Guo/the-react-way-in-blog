@@ -1,15 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Home from "../Home";
-import Login from "../Login";
+import asyncComponent from "../../utils/AsyncComponent";
+import connectRoute from "../../utils/connectRoute";
+
+const AsyncHome = connectRoute(asyncComponent(() => import("../Home")));
+const AsyncLogin = connectRoute(asyncComponent(() => import("../Login")));
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/posts" component={Home} />
+        <Route exact path="/" component={AsyncHome} />
+        <Route path="/login" component={AsyncLogin} />
+        <Route path="/posts" component={AsyncHome} />
       </Switch>
     </BrowserRouter>
   );
