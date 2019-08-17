@@ -5,7 +5,9 @@ import PostsView from "./components/PostsView";
 import PostEditor from "../Post/components/PostEditor";
 import { post } from "../../utils/request";
 import url from "../../utils/url";
-import { actions } from "../../redux/modules/posts";
+import { getLoggedUser } from "../../redux/modules/auth";
+import { actions as postActions } from "../../redux/modules/posts";
+import { actions as uiActions, isAddDialogOpen } from "../../redux/modules/ui";
 import { getPostListWithAuthors } from "../../redux/modules";
 import "./style.css";
 
@@ -46,23 +48,20 @@ class PostList extends Component {
 
   // 新建帖子
   handleNewPost() {
-    this.setState({
-      newPost: true
-    });
+    this.props.openAddDialog();
   }
 
   render() {
-    const { posts, userId } = this.props;
+    const { posts, user, isAddDialogOpen } = this.props;
     return (
       <div className="postList">
         <div>
           <h2>话题列表</h2>
-          {userId ? (
+          {user.userId ? (
             <button onClick={this.handleNewPost}>发帖</button>
           ) : null}
         </div>
-        {/* 若当前正在创建新帖子，则渲染PostEditor组件 */}
-        {this.state.newPost ? (
+        {isAddDialogOpen ? (
           <PostEditor onSave={this.handleSave} onCancel={this.handleCancel} />
         ) : null}
         <PostsView posts={posts}/>
@@ -73,13 +72,16 @@ class PostList extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    posts: getPostListWithAuthors(state)
+    user: getLoggedUser(state),
+    posts: getPostListWithAuthors(state),
+    isAddDialogOpen: isAddDialogOpen(state)
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ...bindActionCreators(actions, dispatch)
+    ...bindActionCreators(postActions, dispatch),
+    ...bindActionCreators(uiActions, dispatch)
   };
 };
 

@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import app from "./app";
 import auth from "./auth";
+import ui from "./ui";
 import posts, { getPostIds, getPostById } from "./posts";
 import users, { getUserById } from "./users";
 
@@ -8,6 +9,7 @@ import users, { getUserById } from "./users";
 const rootReducer = combineReducers({
   app,
   auth,
+  ui,
   posts,
   users
 });

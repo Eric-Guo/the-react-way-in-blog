@@ -10,7 +10,9 @@ const initialState = {
 
 // action types
 export const types = {
-  FETCH_ALL_POSTS: "POSTS/FETCH_ALL_POSTS" //获取帖子列表
+  CREATE_POST: "POSTS/CREATE_POST",         //新建帖子
+  UPDATE_POST: "POSTS/UPDATE_POST",         //修改帖子
+  FETCH_ALL_POSTS: "POSTS/FETCH_ALL_POSTS"  //获取帖子列表
 };
 
 // action creators
