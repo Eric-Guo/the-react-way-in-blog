@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import app from "./app";
 import auth from "./auth";
 import ui from "./ui";
+import comments, { getCommentIdsByPost, getCommentById } from "./comments";
 import posts, { getPostIds, getPostById } from "./posts";
 import users, { getUserById } from "./users";
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   auth,
   ui,
   posts,
+  comments,
   users
 });
 
@@ -23,4 +25,22 @@ export const getPostListWithAuthors = state => {
     const post = getPostById(state, id);
     return { ...post, author: getUserById(state, post.author) };
   });
+};
+
+
+export const getPostDetail = (state, id) => {
+  const post = getPostById(state, id);
+  return post ? { ...post, author: getUserById(state, post.author) } : null;
+};
+
+export const getCommentsWithAuthors = (state, postId) => {
+  const commentIds = getCommentIdsByPost(state, postId);
+  if (commentIds) {
+    return commentIds.map(id => {
+      const comment = getCommentById(state, id);
+      return { ...comment, author: getUserById(state, comment.author) };
+    });
+  } else {
+    return [];
+  }
 };

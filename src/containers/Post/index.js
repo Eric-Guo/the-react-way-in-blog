@@ -1,74 +1,45 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PostEditor from "./components/PostEditor";
 import PostView from "./components/PostView";
 import CommentList from "./components/CommentList";
-import { get, put, post } from "../../utils/request";
-import url from "../../utils/url";
+import { getLoggedUser } from "../../redux/modules/auth";
+import { actions as postActions } from "../../redux/modules/posts";
+import { actions as commentActions } from "../../redux/modules/comments";
+import { actions as uiActions, isEditDialogOpen } from "../../redux/modules/ui";
+import { getPostDetail, getCommentsWithAuthors } from "../../redux/modules";
 import "./style.css";
 
 class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      post: null,
-      comments: [],
-      editing: false
-    };
     this.handleEditClick = this.handleEditClick.bind(this);
-    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.handlePostSave = this.handlePostSave.bind(this);
     this.handlePostCancel = this.handlePostCancel.bind(this);
-    this.refreshComments = this.refreshComments.bind(this);
-    this.refreshPost = this.refreshPost.bind(this);
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
   }
 
   componentDidMount() {
-    this.refreshComments();
-    this.refreshPost();
-  }
-
-  // 获取帖子详情
-  refreshPost() {
     const postId = this.props.match.params.id;
-    get(url.getPostById(postId)).then(data => {
-      if (!data.error && data.length === 1) {
-        this.setState({
-          post: data[0]
-        });
-      }
-    });
-  }
-
-  // 获取评论列表
-  refreshComments() {
-    const postId = this.props.match.params.id;
-    get(url.getCommentList(postId)).then(data => {
-      if (!data.error) {
-        this.setState({
-          comments: data
-        });
-      }
-    });
+    this.props.fetchPost(postId);
+    this.props.fetchComments(postId);
   }
 
   // 让帖子处于编辑态
   handleEditClick() {
-    this.setState({
-      editing: true
-    });
+    this.props.openEditDialog();
   }
 
   // 保存帖子
   handlePostSave(data) {
     const id = this.props.match.params.id;
-    this.savePost(id, data);
+    this.props.updatePost(id, data);
   }
 
   // 取消编辑帖子
   handlePostCancel() {
-    this.setState({
-      editing: false
-    });
+    this.props.closeEditDialog();
   }
 
   // 提交新建的评论
@@ -79,44 +50,18 @@ class Post extends Component {
       post: postId,
       content: content
     };
-    this.saveComment(comment);
-  }
-
-  // 保存新的评论到服务器
-  saveComment(comment) {
-    post(url.createComment(), comment).then(data => {
-      if (!data.error) {
-        this.refreshComments();
-      }
-    });
-  }
-
-  // 同步帖子的修改到服务器
-  savePost(id, post) {
-    post = { ...post, author: this.props.userId };
-    put(url.updatePost(id), post).then(data => {
-      if (!data.error) {
-        /* 因为返回的帖子对象只有author的id信息，
-         * 所有需要额外把完整的author信息合并到帖子对象中 */
-        const newPost = { ...data, author: this.state.post.author };
-        this.setState({
-          post: newPost,
-          editing: false
-        });
-      }
-    });
+    this.props.createComment(comment);
   }
 
   render() {
-    const { post, comments, editing } = this.state;
-    const { userId } = this.props;
+    const { post, comments, user, isEditDialogOpen } = this.props;
     if (!post) {
       return null;
     }
-    const editable = (post.author === null || userId === post.author.id);
+    const editable = (post.author === null || (post.author && user.userId === post.author.id));
     return (
       <div className="post">
-        {editing ? (
+        {isEditDialogOpen ? (
           <PostEditor
             post={post}
             onSave={this.handlePostSave}
@@ -131,7 +76,7 @@ class Post extends Component {
         )}
         <CommentList
           comments={comments}
-          editable={Boolean(userId)}
+          editable={Boolean(user.userId)}
           onSubmit={this.handleCommentSubmit}
         />
       </div>
@@ -139,4 +84,21 @@ class Post extends Component {
   }
 }
 
-export default Post;
+const mapStateToProps = (state, props) => {
+  return {
+    user: getLoggedUser(state),
+    post: getPostDetail(state, props.match.params.id),
+    comments: getCommentsWithAuthors(state, props.match.params.id),
+    isEditDialogOpen: isEditDialogOpen(state)
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    ...bindActionCreators(postActions, dispatch),
+    ...bindActionCreators(commentActions, dispatch),
+    ...bindActionCreators(uiActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post);
