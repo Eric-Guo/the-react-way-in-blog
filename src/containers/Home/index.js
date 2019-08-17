@@ -48,7 +48,7 @@ class Home extends Component {
         <Route
           path={match.url}
           exact
-          render={props => <AsyncPostList userId={user.userId} {...props} />}
+          render={props => <AsyncPostList {...props} />}
         />
         <Route
           path={`${match.url}/:id`}
