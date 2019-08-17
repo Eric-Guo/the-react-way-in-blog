@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import Header from "../../components/Header";
 import asyncComponent from "../../utils/AsyncComponent";
+import { actions as authActions, getLoggedUser } from "../../redux/modules/auth";
 import connectRoute from "../../utils/connectRoute";
 
 const AsyncPost = connectRoute(asyncComponent(() => import("../Post")));
@@ -10,26 +13,31 @@ const AsyncPostList = connectRoute(asyncComponent(() => import("../PostList")));
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userId: sessionStorage.getItem("userId"),
-      username: sessionStorage.getItem("username")
-    };
+    const { userId, username } = this.props.user;
+    if (!userId || !username) {
+      this.restoreLoginInfo();
+    }
     this.handleLogout = this.handleLogout.bind(this);
   }
+
+  restoreLoginInfo = () => {
+    const userId = sessionStorage.getItem("userId");
+    const username = sessionStorage.getItem("username");
+    if (userId && username) {
+      this.props.setLoginInfo(userId, username);
+    }
+  };
 
   handleLogout() {
     // 注销用户
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("username");
-    this.setState({
-      userId: null,
-      username: null
-    });
+    this.props.logout();
   }
 
   render() {
-    const { match, location } = this.props;
-    const { userId, username } = this.state;
+    const { match, location, user } = this.props;
+    const username = user && user.username ? user.username : "";
     return (
       <div>
         <Header
@@ -40,15 +48,27 @@ class Home extends Component {
         <Route
           path={match.url}
           exact
-          render={props => <AsyncPostList userId={userId} {...props} />}
+          render={props => <AsyncPostList userId={user.userId} {...props} />}
         />
         <Route
           path={`${match.url}/:id`}
-          render={props => <AsyncPost userId={userId} {...props} />}
+          render={props => <AsyncPost userId={user.userId} {...props} />}
         />
       </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state, props) => {
+  return {
+    user: getLoggedUser(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators(authActions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
