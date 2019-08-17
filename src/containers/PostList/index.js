@@ -14,10 +14,6 @@ import "./style.css";
 class PostList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      posts: [],
-      newPost: false
-    };
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleNewPost = this.handleNewPost.bind(this);
@@ -41,9 +37,7 @@ class PostList extends Component {
 
   // 取消新建帖子
   handleCancel() {
-    this.setState({
-      newPost: false
-    });
+    this.props.dispatch({ type: "UI/CLOSE_ADD_DIALOG" })
   }
 
   // 新建帖子
@@ -80,6 +74,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    dispatch,
     ...bindActionCreators(postActions, dispatch),
     ...bindActionCreators(uiActions, dispatch)
   };
