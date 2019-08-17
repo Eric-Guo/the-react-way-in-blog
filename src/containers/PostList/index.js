@@ -1,8 +1,12 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import PostsView from "./components/PostsView";
 import PostEditor from "../Post/components/PostEditor";
-import { get, post } from "../../utils/request";
+import { post } from "../../utils/request";
 import url from "../../utils/url";
+import { actions } from "../../redux/modules/posts";
+import { getPostListWithAuthors } from "../../redux/modules";
 import "./style.css";
 
 class PostList extends Component {
@@ -15,24 +19,10 @@ class PostList extends Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.handleNewPost = this.handleNewPost.bind(this);
-    this.refreshPostList = this.refreshPostList.bind(this);
   }
 
   componentDidMount() {
-    this.refreshPostList();
-  }
-
-  // 获取帖子列表
-  refreshPostList() {
-    // 调用后台API获取列表数据，并将返回的数据设置到state中
-    get(url.getPostList()).then(data => {
-      if (!data.error) {
-        this.setState({
-          posts: data,
-          newPost: false
-        });
-      }
-    });
+    this.props.fetchAllPosts();  // 获取帖子列表
   }
 
   // 保存帖子
@@ -42,7 +32,7 @@ class PostList extends Component {
     post(url.createPost(), postData).then(data => {
       if (!data.error) {
         // 保存成功后，刷新帖子列表
-        this.refreshPostList();
+        this.props.fetchAllPosts();
       }
     });
   }
@@ -62,23 +52,35 @@ class PostList extends Component {
   }
 
   render() {
-    const { userId } = this.props;
+    const { posts, userId } = this.props;
     return (
       <div className="postList">
         <div>
-          <h2>帖子列表</h2>
-           {/* 只有在登录状态，才显示发帖按钮 */}
-          {userId ? <button onClick={this.handleNewPost}>发帖</button> : null}
+          <h2>话题列表</h2>
+          {userId ? (
+            <button onClick={this.handleNewPost}>发帖</button>
+          ) : null}
         </div>
         {/* 若当前正在创建新帖子，则渲染PostEditor组件 */}
         {this.state.newPost ? (
           <PostEditor onSave={this.handleSave} onCancel={this.handleCancel} />
         ) : null}
-        {/* PostsView显示帖子的列表数据 */}
-        <PostsView posts={this.state.posts} />
+        <PostsView posts={posts}/>
       </div>
     );
   }
 }
 
-export default PostList;
+const mapStateToProps = (state, props) => {
+  return {
+    posts: getPostListWithAuthors(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators(actions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostList);
