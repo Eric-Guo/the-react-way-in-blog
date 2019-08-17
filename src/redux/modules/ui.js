@@ -1,7 +1,8 @@
 import { types as postTypes } from "./posts";
 
 const initialState = {
-  addDialogOpen: false
+  addDialogOpen: false,
+  editDialogOpen: false
 };
 
 // action types
@@ -15,7 +16,11 @@ export const actions = {
   // 打开新建帖子的编辑框
   openAddDialog: () => ({
     type: types.OPEN_ADD_DIALOG
-  })
+  }),
+  // 关闭新建帖子的编辑框
+  closeAddDialog: () => ({
+    type: types.CLOSE_ADD_DIALOG
+  }),
 };
 
 // reducers

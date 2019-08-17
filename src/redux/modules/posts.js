@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { get } from "../../utils/request";
+import { get, post } from "../../utils/request";
 import url from "../../utils/url";
 import { actions as appActions } from "./app";
 
@@ -33,7 +33,29 @@ export const actions = {
         });
       }
     };
-  }
+  },
+  // 新建帖子
+  createPost: (title, content) => {
+    return (dispatch, getState) => {
+      const state = getState();
+      const author = state.auth.userId;
+      const params = {
+        author,
+        title,
+        content,
+        vote: 0
+      };
+      dispatch(appActions.startRequest());
+      return post(url.createPost(), params).then(data => {
+        dispatch(appActions.finishRequest());
+        if (!data.error) {
+          dispatch(createPostSuccess(data));
+        } else {
+          dispatch(appActions.setError(data.error));
+        }
+      });
+    };
+  },
 };
 
 // 获取帖子列表成功
@@ -42,6 +64,12 @@ const fetchAllPostsSuccess = (posts, postIds, authors) => ({
   posts,
   postIds,
   users: authors
+});
+
+// 新建帖子成功
+const createPostSuccess = post => ({
+  type: types.CREATE_POST,
+  post: post
 });
 
 const shouldFetchAllPosts = state => {

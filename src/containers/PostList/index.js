@@ -3,8 +3,6 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import PostsView from "./components/PostsView";
 import PostEditor from "../Post/components/PostEditor";
-import { post } from "../../utils/request";
-import url from "../../utils/url";
 import { getLoggedUser } from "../../redux/modules/auth";
 import { actions as postActions } from "../../redux/modules/posts";
 import { actions as uiActions, isAddDialogOpen } from "../../redux/modules/ui";
@@ -24,20 +22,13 @@ class PostList extends Component {
   }
 
   // 保存帖子
-  handleSave(data) {
-    // 当前登录用户的信息和默认的点赞数，同帖子的标题和内容，共同构成最终待保存的帖子对象
-    const postData = { ...data, author: this.props.userId, vote: 0 };
-    post(url.createPost(), postData).then(data => {
-      if (!data.error) {
-        // 保存成功后，刷新帖子列表
-        this.props.fetchAllPosts();
-      }
-    });
-  }
+  handleSave = data => {
+    this.props.createPost(data.title, data.content);
+  };
 
   // 取消新建帖子
   handleCancel() {
-    this.props.dispatch({ type: "UI/CLOSE_ADD_DIALOG" })
+    this.props.closeAddDialog();
   }
 
   // 新建帖子
@@ -74,7 +65,6 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    dispatch,
     ...bindActionCreators(postActions, dispatch),
     ...bindActionCreators(uiActions, dispatch)
   };
