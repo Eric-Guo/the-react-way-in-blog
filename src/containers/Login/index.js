@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { post } from "../../utils/request";
-import url from "../../utils/url";
+import { actions as authActions, getLoggedUser } from "../../redux/modules/auth";
 import "./style.css";
 
 class Login extends Component {
@@ -14,6 +15,15 @@ class Login extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const isLoggedIn = !this.props.user.userId && nextProps.user.userId;
+    if (isLoggedIn) {
+      this.setState({
+        redirectToReferrer: true
+      });
+    }
   }
 
   // 处理用户名、密码的变化
@@ -40,23 +50,11 @@ class Login extends Component {
       alert("用户名或密码不能为空！");
       return;
     }
-    const params = {
-      username,
-      password
-    };
-    post(url.login(), params).then(data => {
-      if (data.error) {
-        alert(data.error.message || "login failed");
-      } else {
-        // 保存登录信息到sessionStorage
-        sessionStorage.setItem("userId", data.userId);
-        sessionStorage.setItem("username", username);
-        // 登录成功后，设置redirectToReferrer为true
-        this.setState({
-          redirectToReferrer: true
-        });
-      }
-    });
+    // 如果当前已有用户登录，先注销
+    if (this.props.user && this.props.user.userId) {
+      this.props.logout();
+    }
+    this.props.login(username, password);
   }
 
   render() {
@@ -97,4 +95,16 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = (state, props) => {
+  return {
+    user: getLoggedUser(state)
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ...bindActionCreators(authActions, dispatch)
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
