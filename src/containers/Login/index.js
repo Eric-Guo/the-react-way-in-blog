@@ -13,8 +13,6 @@ class Login extends Component {
       password: "123456",
       redirectToReferrer: false   // 是否重定向到之前的页面
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -27,7 +25,7 @@ class Login extends Component {
   }
 
   // 处理用户名、密码的变化
-  handleChange(e) {
+  handleChange = e => {
     if (e.target.name === "username") {
       this.setState({
         username: e.target.value
@@ -39,10 +37,10 @@ class Login extends Component {
     } else {
       // do nothing
     }
-  }
+  };
 
   // 提交登录表单
-  handleSubmit(e) {
+  handleSubmit = e => {
     e.preventDefault();
     const username = this.state.username;
     const password = this.state.password;
@@ -55,7 +53,7 @@ class Login extends Component {
       this.props.logout();
     }
     this.props.login(username, password);
-  }
+  };
 
   render() {
     // from 保存跳转到登录页前的页面路径，用于在登录成功后重定向到原来页面

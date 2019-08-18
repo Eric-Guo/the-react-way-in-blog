@@ -12,13 +12,6 @@ import { getPostDetail, getCommentsWithAuthors } from "../../redux/modules";
 import "./style.css";
 
 class Post extends Component {
-  constructor(props) {
-    super(props);
-    this.handleEditClick = this.handleEditClick.bind(this);
-    this.handlePostSave = this.handlePostSave.bind(this);
-    this.handlePostCancel = this.handlePostCancel.bind(this);
-    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
-  }
 
   componentDidMount() {
     const postId = this.props.match.params.id;
@@ -27,26 +20,27 @@ class Post extends Component {
   }
 
   // 让帖子处于编辑态
-  handleEditClick() {
+  handleEditClick = () => {
     this.props.openEditDialog();
   }
 
   // 保存帖子
-  handlePostSave(data) {
+  handlePostSave = (data) => {
     const id = this.props.match.params.id;
     this.props.updatePost(id, data);
   }
 
   // 取消编辑帖子
-  handlePostCancel() {
+  handlePostCancel = () => {
     this.props.closeEditDialog();
   }
 
   // 提交新建的评论
-  handleCommentSubmit(content) {
+  handleCommentSubmit = (content) => {
     const postId = this.props.match.params.id;
+    const { user } = this.props;
     const comment = {
-      author: this.props.userId,
+      author: user.userId,
       post: postId,
       content: content
     };

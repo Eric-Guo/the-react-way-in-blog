@@ -52,7 +52,7 @@ class Home extends Component {
         />
         <Route
           path={`${match.url}/:id`}
-          render={props => <AsyncPost userId={user.userId} {...props} />}
+          render={props => <AsyncPost {...props} />}
         />
       </div>
     );

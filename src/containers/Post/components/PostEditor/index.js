@@ -6,8 +6,8 @@ class PostEditor extends Component {
     super(props);
     const { post } = this.props;
     this.state = {
-      title: (post && post.title) || "",
-      content: (post && post.content) || ""
+      title: (post && post.title) || '',
+      content: (post && post.content) || ''
     };
     this.handleCancelClick = this.handleCancelClick.bind(this);
     this.handleSaveClick = this.handleSaveClick.bind(this);
