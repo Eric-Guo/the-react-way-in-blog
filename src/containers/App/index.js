@@ -11,19 +11,19 @@ const AsyncLogin = connectRoute(asyncComponent(() => import("../Login")));
 
 class App extends Component {
   render() {
-  const { requestQuantity } = this.props;
-  return (
-  <div>
-    <Router>
-      <Switch>
-        <Route exact path="/" component={AsyncHome} />
-        <Route path="/login" component={AsyncLogin} />
-        <Route path="/posts" component={AsyncHome} />
-      </Switch>
-    </Router>
-    {requestQuantity > 0 && <Loading />}
-  </div>
-  );
+    const { requestQuantity } = this.props;
+    return (
+      <div>
+        <Router>
+          <Switch>
+            <Route exact path="/" component={AsyncHome} />
+            <Route path="/login" component={AsyncLogin} />
+            <Route path="/posts" component={AsyncHome} />
+          </Switch>
+        </Router>
+        {requestQuantity > 0 && <Loading />}
+      </div>
+    );
   }
 }
 
