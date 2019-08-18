@@ -13,11 +13,15 @@ const AsyncPostList = connectRoute(asyncComponent(() => import("../PostList")));
 class Home extends Component {
   constructor(props) {
     super(props);
+    window.addEventListener("beforeunload", this.handleBeforeUnload);
     const { userId, username } = this.props.user;
     if (!userId || !username) {
       this.restoreLoginInfo();
     }
-    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.handleBeforeUnload);
   }
 
   restoreLoginInfo = () => {
@@ -25,6 +29,14 @@ class Home extends Component {
     const username = sessionStorage.getItem("username");
     if (userId && username) {
       this.props.setLoginInfo(userId, username);
+    }
+  };
+
+  handleBeforeUnload = () => {
+    const { userId, username } = this.props.user;
+    if (userId && username) {
+      sessionStorage.setItem("userId", userId);
+      sessionStorage.setItem("username", username);
     }
   };
 
