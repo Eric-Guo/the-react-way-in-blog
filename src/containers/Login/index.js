@@ -15,7 +15,7 @@ class Login extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     const isLoggedIn = !this.props.user.userId && nextProps.user.userId;
     if (isLoggedIn) {
       this.setState({
